@@ -3,11 +3,11 @@ import math
 
 def largest_prime_factor(x):
     sqrt = int(math.sqrt(x))
-    i = 0
-    while sqrt - i > 1:
-        if x % (sqrt - i) == 0 and is_prime(sqrt - i):
-            return sqrt - i
-        i = i + 1
+    i = sqrt
+    while i > 1:
+        if x % i == 0 and is_prime(i):
+            return i
+        i = i - 1
 
 
 def is_prime(x):
