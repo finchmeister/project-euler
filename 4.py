@@ -9,8 +9,15 @@ def is_palindrome(x):
     x = str(x)
     return x == x[::-1]
 
-"""
-Start at 999, 999
-two loops iterating down
-"""
 
+def find_palindrome():
+    for x in range(999, 900, -1):
+        for y in range(999, 900, -1):  # type: int
+            if is_palindrome(x * y):
+                print 'Palindrome: ' + str(x * y)
+                print 'x: ' + str(x)
+                print 'y: ' + str(y)
+                return
+
+
+find_palindrome()
