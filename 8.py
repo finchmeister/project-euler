@@ -54,7 +54,7 @@ def find_max_product_of_adjacent_numbers(n_adjacent, x):
     i = max_p = 0
     while len(x[i:i + n_adjacent]) == n_adjacent:
         p = get_product(x[i:i + n_adjacent])
-        if (p > max_p):
+        if p > max_p:
             max_p = p
         i += 1
     return max_p
