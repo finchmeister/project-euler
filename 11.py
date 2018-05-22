@@ -33,20 +33,60 @@ class GridProduct:
     def __init__(self, raw_grid):
         self.raw_grid = raw_grid
         self.grid = self.raw_grid_to_list(self, raw_grid)
-        self.max = 0
+
+    def get_max_product(self):
+        mh = self.get_max_horizontal()
+        mv = self.get_max_vertical()
+        mse = self.get_max_diag_south_east()
+        msw = self.get_max_diag_south_west()
+        return max(mh, mv, mse, msw)
 
     def get_max_horizontal(self):
-        rows_string = self.split_by_row()
-        for row_string in rows_string:
-            row = row_string.split()
-            for x in range(0, len(row)-4+1):
-                p = self.get_list_product(row[x:x+4])
-                if p > self.max:
-                    self.max = p
-        return
+        y_max = len(self.grid)
+        x_max = len(self.grid) - 4 + 1
+        max_product = 0
+        for y in range(0, y_max):
+            for x in range(0, x_max):
+                p = self.get_list_product(
+                    (self.grid[y][x], self.grid[y][x + 1], self.grid[y][x + 2], self.grid[y][x + 3]))
+                if p > max_product:
+                    max_product = p
+        return max_product
 
-    def get_grid(self):
-        return self.grid
+    def get_max_vertical(self):
+        y_max = len(self.grid) - 4 + 1
+        x_max = len(self.grid)
+        max_product = 0
+        for y in range(0, y_max):
+            for x in range(0, x_max):
+                p = self.get_list_product((self.grid[y][x], self.grid[y + 1][x], self.grid[y + 2][x], self.grid[y + 3][x]))
+                if p > max_product:
+                    max_product = p
+        return max_product
+
+    def get_max_diag_south_east(self):
+        y_max = len(self.grid) - 4 + 1
+        x_max = len(self.grid) - 4 + 1
+        max_product = 0
+        for x in range(0, y_max):
+            for y in range(0, x_max):
+                p = self.get_list_product(
+                    (self.grid[x][y], self.grid[x + 1][y + 1], self.grid[x + 2][y + 2], self.grid[x + 3][y + 3]))
+                if p > max_product:
+                    max_product = p
+        return max_product
+
+    def get_max_diag_south_west(self):
+        y_max = len(self.grid) - 4 + 1
+        x_max = len(self.grid) - 4 + 1
+        max_product = 0
+        for x in range(0, y_max):
+            for y in range(0, x_max):
+                p = self.get_list_product(
+                    (self.grid[x + 3][y], self.grid[x + 2][y + 1], self.grid[x + 1][y + 2], self.grid[x][y + 3]))
+                if p > max_product:
+                    max_product = p
+        return max_product
 
     @staticmethod
     def raw_grid_to_list(self, raw_grid):
@@ -66,20 +106,6 @@ class GridProduct:
         for i in x:
             p *= int(i)
         return p
-    #
-    # def get_max_product(self):
-    #     self.grid
-    #
-    # def get_max_vertical(self):
-    #
-    #
-    #
-    #
-    # def get_max_diag_south_east(self):
-    #
-    #
-    # def get_max_diag_south_west(self):
-
 
 
 gp = GridProduct("""08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08
@@ -103,4 +129,4 @@ gp = GridProduct("""08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08
 20 73 35 29 78 31 90 01 74 31 49 71 48 86 81 16 23 57 05 54
 01 70 54 71 83 51 54 69 16 92 33 48 61 43 52 01 89 19 67 48""")
 
-print(gp.get_grid())
+print(gp.get_max_product())
