@@ -37,8 +37,10 @@ class MaximumPathSum:
 
     @staticmethod
     def create_list_from_triangle_string(triangle_string):
-        # Make int
-        return map(lambda x: x.split(" "), triangle_string.split("\n"))
+        triangle = []
+        for row in map(lambda x: x.split(" "), triangle_string.split("\n")):
+            triangle.append(map(int, row))
+        return triangle
 
     def find_max_path(self):
         x = y = sum = 0
@@ -67,7 +69,6 @@ triangle = """75
 70 11 33 28 77 73 17 78 39 68 17 57
 91 71 52 38 17 14 91 43 58 50 27 29 48
 63 66 04 68 89 53 67 30 73 16 69 87 40 31
-04 62 98 27 23 09 70 98 73 93 38 53 60 04 23
-"""
+04 62 98 27 23 09 70 98 73 93 38 53 60 04 23"""
 
-print(MaximumPathSum(triangle).find_max_path())
+print(MaximumPathSum(triangle).triangle)
