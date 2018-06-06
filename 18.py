@@ -60,6 +60,21 @@ class MaximumPathSum:
     def get_max_path_sum(self):
         return sum(self.get_max_path())
 
+    def get_next_points(self, x, y):
+        x1 = x2 = x + 1
+        y1 = y
+        y2 = y + 1
+        if x1 < self.no_of_rows:
+            return (x1, y1), (x2, y2)
+
+
+    def brute_force_path_length_n(self, n, path=((0, 0),)):
+        points = self.get_next_points(path[-1][0], path[-1][1])
+        # for point in points:
+        # return list of x,y, length n
+        return
+#    def search_max_path(self, x, y):
+
 
 triangle = """
 75
@@ -79,4 +94,7 @@ triangle = """
 04 62 98 27 23 09 70 98 73 93 38 53 60 04 23
 """
 
-print(MaximumPathSum(triangle).get_max_path_sum())
+#print(MaximumPathSum(triangle).get_next_points(20,10))
+
+path=[(4,5)]
+print path[-1][1]
