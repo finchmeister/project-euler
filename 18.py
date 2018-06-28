@@ -67,13 +67,13 @@ class MaximumPathSum:
         if x1 < self.no_of_rows:
             return (x1, y1), (x2, y2)
 
-    def brute_force_max_length_path_length_n(self, n, path):
+    def brute_force_max_length_path_length_n(self, n, path, complete_paths):
         if len(path) < n:
             points = self.get_next_points(path[-1][0], path[-1][1])
             for point in points:
                 path.append(point)
-                self.brute_force_max_length_path_length_n(n - 1, path)
-        return path
+                self.brute_force_max_length_path_length_n(n - 1, path, complete_paths)
+        return complete_paths.append(path)
 
     def get_sum_from_path(self, path):
         x = 0
@@ -102,6 +102,9 @@ triangle = """
 04 62 98 27 23 09 70 98 73 93 38 53 60 04 23
 """
 
+
+
+
 #print(MaximumPathSum(triangle).get_next_points(20,10))
 
-print MaximumPathSum(triangle).brute_force_max_length_path_length_n(2, [(0, 0)])
+print MaximumPathSum(triangle).brute_force_max_length_path_length_n(2, [(0, 0)], [])
