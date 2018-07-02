@@ -25,7 +25,26 @@ sub_triangle = """
 75
 95 64
 17 47 82
+18 35 87 10
 """
+
+sub_triangle_2 = """
+3
+7 4
+2 4 6
+8 5 9 3
+"""
+
+def compute_max_path_from_triange(triangle_string):
+    triangle = create_list_from_triangle_string(triangle_string)
+    graph = convert_triangle_to_graph(triangle)
+    source_vertex = 0
+    target_vertex = max(graph, key=int)
+    dijkstra_result = dijkstra(graph, source_vertex, target_vertex)
+    print(graph)
+    print(dijkstra_result[0])
+    print(dijkstra_result[1])
+    return get_max_distance_from_dijkstra(dijkstra_result, graph)
 
 
 def create_list_from_triangle_string(triangle_string):
@@ -35,24 +54,47 @@ def create_list_from_triangle_string(triangle_string):
     return triangle
 
 
-def convert_triangle_to_graph(triangle_string):
-    # WIP
-    triangle = create_list_from_triangle_string(triangle_string)
-    vertex_mapping = {}
-    i = 1
-    x = y = 0
+def convert_triangle_to_graph(triangle):
+    vertex = 1
+    x = 0
+    y = 1
+    mapping = {0: {0: 0}}
     for row in triangle:
+        mapping_x = {}
         for cell in row:
-            vertex_mapping[i] = [x,y]
-            y += 1
-            i += 1
-        x += 1
-    print(vertex_mapping)
+            mapping_x[x] = vertex
+            vertex += 1
+            x += 1
+        mapping[y] = mapping_x
+        x = 0
+        y += 1
+
+    vertex_max = vertex
+    graph = {}
+
+    for y, mapping_x in mapping.items():
+        next_y = y + 1
+        next_level = mapping.get(next_y)
+        for x, vertex in mapping_x.items():
+            graph_next = {}
+            if next_level is not None:
+                x1 = x
+                x2 = x + 1
+                if next_level.get(x1) is not None:
+                    next_vertex_1 = mapping[next_y][x1]
+                    graph_next[next_vertex_1] = triangle[y][x1]
+
+                if next_level.get(x2) is not None:
+                    next_vertex_2 = mapping[next_y][x2]
+                    graph_next[next_vertex_2] = triangle[y][x2]
+                graph[vertex] = graph_next
+            else:
+                graph[vertex] = {vertex_max: 0}
+    graph[vertex_max] = {}
+    return graph
 
 
-
-
-def get_next_max(q):
+def get_next_max(q, graph):
     max_weight = 0
     next_v = 0
     for v, edge_weight in graph[q].items():
@@ -62,25 +104,22 @@ def get_next_max(q):
     return next_v
 
 
-graph = {
-    0: {1: 75},
-    1: {2: 95, 3: 64},
-    2: {4: 17, 5: 47},
-    3: {5: 47, 6: 82},
-    4: {7: 18, 8: 35},
-    5: {8: 35, 9: 87},
-    6: {9: 87, 10: 10},
-    7: {11: 0},
-    8: {11: 0},
-    9: {11: 0},
-    10: {11: 0},
-    11: {}
-}
+# graph = {
+#     0: {1: 75},
+#     1: {2: 95, 3: 64},
+#     2: {4: 17, 5: 47},
+#     3: {5: 47, 6: 82},
+#     4: {7: 18, 8: 35},
+#     5: {8: 35, 9: 87},
+#     6: {9: 87, 10: 10},
+#     7: {11: 0},
+#     8: {11: 0},
+#     9: {11: 0},
+#     10: {11: 0},
+#     11: {}
+# }
 
 def dijkstra(graph, source, target):
-    source = 0
-    target = 11
-
     q = list()
     dist = {}
     prev = {}
@@ -93,7 +132,7 @@ def dijkstra(graph, source, target):
     dist[source] = 0
 
     while q:
-        u = get_next_max(q[0])
+        u = get_next_max(q[0], graph)
         del q[0]
         if u == target:
             return dist, prev
@@ -107,6 +146,17 @@ def dijkstra(graph, source, target):
 
     return dist, prev
 
-#print dijkstra(graph, 0, 11)
 
-convert_triangle_to_graph(triangle_string)
+def get_max_distance_from_dijkstra(dijkstra_result, graph):
+    dijkstra_prev = dijkstra_result[1]
+    target_vertex = int(max(dijkstra_prev, key=int))
+    current_vertex = target_vertex
+    max_dist = 0
+    while current_vertex > 0:
+        prev_vertex = dijkstra_prev[current_vertex]
+        max_dist += graph[prev_vertex][current_vertex]
+        current_vertex = prev_vertex
+    return max_dist
+
+
+print compute_max_path_from_triange(triangle_string)
