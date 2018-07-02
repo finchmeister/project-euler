@@ -41,7 +41,7 @@ def compute_max_path_from_triange(triangle_string):
     source_vertex = 0
     target_vertex = max(graph, key=int)
     dijkstra_result = dijkstra(graph, source_vertex, target_vertex)
-    print(graph)
+    #print(graph)
     print(dijkstra_result[0])
     print(dijkstra_result[1])
     return get_max_distance_from_dijkstra(dijkstra_result, graph)
@@ -155,8 +155,10 @@ def get_max_distance_from_dijkstra(dijkstra_result, graph):
     while current_vertex > 0:
         prev_vertex = dijkstra_prev[current_vertex]
         max_dist += graph[prev_vertex][current_vertex]
+        print  graph[prev_vertex][current_vertex]
         current_vertex = prev_vertex
     return max_dist
+
 
 
 print compute_max_path_from_triange(triangle_string)
