@@ -73,11 +73,19 @@ class BruteForce:
     def get_next_path(path):
         next_path = path[:]
         path_length = len(path)
-        i = 0
-        while path[i] == path[i + 1] and not (i > 1 and i < path_length and path[i - 1] == path[i]):
-            i +=1
-        increment = i - 1
-        next_path[increment] += 1
+        i = 1
+
+        while path[i-1] == path[i] and i < path_length:
+            if i == path_length - 1:
+                next_path[i] += 1
+                return next_path
+            i += 1
+
+        j = 1
+        while path[path_length-j] + 1 != path[path_length-(j+1)] and j < path_length + 1:
+            j += 1
+
+        next_path[(i-j)] += 1
 
         return next_path
 
@@ -103,7 +111,15 @@ class BruteForce:
 
 
 bf = BruteForce(triangle_string)
-print bf.get_next_path([1,1,0,0])
+print bf.get_next_path([0,1,1,1])
+
+# print bf.get_next_path([0,0,0,0])
+# print bf.get_next_path([0,0,0,1])
+# print bf.get_next_path([0,0,1,1])
+# print bf.get_next_path([0,1,1,1])
+# print bf.get_next_path([0,1,1,2])
+# print bf.get_next_path([0,1,2,2])
+# print bf.get_next_path([0,1,2,3])
 
 
 #print(brute_force(triangle_string))
